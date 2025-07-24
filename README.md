@@ -28,9 +28,11 @@ shh连接可以登录机器狗主机，在机器狗上进行必要的操作，�
 
 首先连上机器狗热点  password：12345678  详细信息见保修单
 
+此处以本人的机器狗ip和用户名为例，其实有几种组合的可能，注意鉴别   见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK) 4.2部分
+
 机器狗IP：192.168.2.1   用户名：ysc
 
- password见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK) 4.2部分
+ password：'       
 
 更改网络配置文件方式见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)  5.配置数据上报地址和型号参数
 
