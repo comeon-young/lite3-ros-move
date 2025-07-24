@@ -1,4 +1,4 @@
-# 机器狗ros运动控制
+# 云深处lite3机器狗（体验版）ros运动控制教程
 
 ## 介绍
 目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
@@ -60,7 +60,7 @@ cd ~/message_transformer_ws
 
 catkin_make   #每次更改代码记得再编译一次，相当于ros2的colcon build
 
-**（5）更改机器狗主机ip（两处，在gitlab上我已改好）**
+**（5）更改机器狗主机ip（两处，我已改好）**
 分别前往launch文件和/message_transformer/src/ros2qnx.cpp，把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
 
 再编译一次工作空间
