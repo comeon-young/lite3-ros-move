@@ -1,6 +1,8 @@
 # 云深处lite3机器狗（体验版）ros运动控制教程
 
 ## 介绍
+本人在开发lite3机器狗的过程中，发现由于版本限制、文档描述不清、经验不足等原因，在运动控制方面遇到了一定的困难，并且发现关于lite3的控制教程也是十分稀少，于是整理了这个完整、详尽、连初学者也能快速上手的lite3运动控制教程！(｡・`ω´･)
+
 目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
 
 云深处官方github：   [GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)                     （提供ros1和ros2代码，使用了ros1）
