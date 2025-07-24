@@ -11,8 +11,19 @@ legubiao的可视化库：[GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Dee
 ## Installation
 Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-#ghg
-111
+## ssh连接机器狗方式
+shh连接可以登录机器狗主机，在机器狗上进行必要的操作，如：更改网络配置文件（感知主机的地址，狗向这个ip发送自身信息）、重启运动程序等。
+
+首先连上机器狗热点  password见保修单
+
+机器狗IP：192.168.2.1   用户名：ysc
+
+ password见GitHub - DeepRoboticsLab/Lite3_MotionSDK 4.2
+
+更改网络配置文件方式见GitHub - DeepRoboticsLab/Lite3_MotionSDK  5.配置数据上报地址和型号参数
+
+重启运动程序方式见GitHub - DeepRoboticsLab/Lite3_MotionSDK   7.2 通讯问题排查
+
 ## 使用方法
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
