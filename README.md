@@ -1,87 +1,204 @@
-# 机器狗运动控制
+# 机器狗ros运动控制
+
+## 介绍
+目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
+
+云深处官方github：   [GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)                     （提供ros1和ros2代码，使用了ros1）
+
+legubiao的可视化库：[GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3](https://github.com/legubiao/lite3_ros2) （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2，官方库的ros2也是可用的）
+
+
+## 1.配置Ubuntu环境 下载ros
+我的ros1和ros2分别安装在不同的虚拟机里Ubuntu20.04和Ubuntu22.04，下载ros和运动程序时请注意虚拟机差异
+
+下载Ubuntu和VWware Tools参考  [VMware 安装配置 Ubuntu（最新版、超详细）_vmware-workstation-full-17.5.1-23298084.exe-CSDN博客](https://blog.csdn.net/m0_70885101/article/details/137694608)
+
+ros2下载参考   [ROS2安装方法 - 图书资源](https://book.guyuehome.com/ROS2/1.%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/1.3_ROS2%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/)
+
+ros1参考  [【ROS】在 Ubuntu 20.04 安装 ROS 的详细教程_ubuntu20.04安装ros-CSDN博客](https://blog.csdn.net/PlutooRx/article/details/127558240)
+
+
+## 2.ssh连接机器狗方式
+shh连接可以登录机器狗主机，在机器狗上进行必要的操作，如：更改网络配置文件（感知主机的地址，狗向这个ip发送自身信息）、重启运动程序等。
+
+首先连上机器狗热点  password：12345678  详细信息见保修单
+
+机器狗IP：192.168.2.1   用户名：ysc
+
+ password见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK) 4.2部分
+
+更改网络配置文件方式见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)  5.配置数据上报地址和型号参数
+
+重启运动程序方式见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)   7.2 通讯问题排查
+
+
+## 使用方法
+[GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)官方的这个运动通信库是为高级版的狗准备的，那些狗主机内自带ros程序，但是我们开发的体验版是没有的，所以代码需要下载到开发主机上
+
+
+## 3.配置ros1运动控制程序（ubuntu20.04）      使用ros2请直接看第5部分
+**（1）. 创建工作空间**
+
+mkdir -p ~/message_transformer_ws/src
+
+cd ~/message_transformer_ws/src
+
+**（2）初始化工作空间**
+
+catkin_init_workspace
+
+**（3）克隆代码库**
+
+git clone https://public-gitlab.cloudglab.cn/gzy/move.git
+
+**（4）编译工作空间**
+
+cd ~/message_transformer_ws
+
+catkin_make   #每次更改代码记得再编译一次，相当于ros2的colcon build
+
+**（5）更改机器狗主机ip（两处，在gitlab上我已改好）**
+分别前往launch文件和/message_transformer/src/ros2qnx.cpp，把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
+
+再编译一次工作空间
+
+## 4.使用ros1控制机器狗
+**（1）ssh连接机器狗**
+连上后
+
+查看网络配置文件，把ip改成自己开发主机的，使用虚拟机的注意把网络设置为桥接模式，nat模式虚拟机获得的IP是假的
+
+ cd ~/jy_exe/conf
+
+ vim network.toml
+
+重启运动程序。其他人的控制中断或一些意外原因会致使jy_exe不工作，通常重启下就好了，但切记先让狗处于趴下状态，否则狗将重重摔在地上
+
+ cd ~/jy_exe
+
+ sudo ./stop.sh
+ 
+ sudo ./restart.sh
+
+**（2）启动通信节点**
+
+cd message_transformer_ws/                                    #进入功能包工作空间
+
+source devel/setup.bash                                       #添加工作空间环境变量
+
+roslaunch message_transformer message_transformer.launch      #启动通信功能包节点
+
+**（3）发布速度指令  第3到第5步不分前后顺序，可按需调整**
+
+
+ 使用/cmd_vel话题向运动主机下发速度指令，话题消息类型geometry_msgs/Twist定义如下：
+
+geometry_msgs/Vector3 linear                # 线速度(m/s)
+
+    float64 x                    # 前向速度，向前为正
+
+    float64 y                    # 侧向速度，向左为正
+
+    float64 z                    # 无效参数
+
+geometry_msgs/Vector3 angular                # 角速度(rad/s)
+
+    float64 x                    # 无效参数
+
+    float64 y                    # 无效参数
+    
+    float64 z                    # 转向角速度，左转为正
 
 
 
-## Getting started
+在新终端输入
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+ rostopic pub /cmd_vel geometry_msgs/Twist
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+按空格+tab，自动补全消息格式，再在速度值前加上 -r 10 使其一秒发十次，如下：
 
-## Add your files
+rostopic pub /cmd_vel geometry_msgs/Twist -r 10 "linear: 
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+x: 0.2 
 
-```
-cd existing_repo
-git remote add origin http://public-gitlab.cloudglab.cn/gzy/move.git
-git branch -M main
-git push -uf origin main
-```
+y: 0.1 
 
-## Integrate with your tools
+z: 0.0 
 
-- [ ] [Set up project integrations](http://public-gitlab.cloudglab.cn/gzy/move/-/settings/integrations)
+angular: 
 
-## Collaborate with your team
+x: 0.0 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+y: 0.0 
 
-## Test and Deploy
+z: 0.3 
 
-Use the built-in continuous integration in GitLab.
+**（4）机器狗需要在起立状态下被控制**
+使用云深处app使狗起立
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+**（5）进入自主模式**
 
-***
+控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指
+令，手动模式下机器人响应由手柄下发的速度指令。
 
-# Editing this README
+为了使用ros控制机器狗，我们需要让狗进入自主模式。但我们体验版的狗是不能像官方文档里一样从app切换为自主模式的，所以我使用python脚本持续发送指令码确保狗处于自主模式。
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+![自主模式](img/1.png)
 
-## Suggestions for a good README
+**总之，要做的事是：运行test.py**
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+也可以使用自己的方式发送UDP指令码
 
-## Name
-Choose a self-explaining name for your project.
+一切顺利的话，机器狗将开始按速度指令运动
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+**（6）查看通信状态的一些方式**
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+rostopic info /cmd_vel         查看/cmd_vel话题的发布者订阅者数量
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+rostopic echo /cmd_vel        打印/cmd_vel话题收到的信息
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，确认狗收到UDP指令（这条在ysc上运行）
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## 5.配置ros2运动控制程序（Ubuntu22.04）
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- 创建工作空间
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+cd ~
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+mkdir ros2_ws
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+cd ros2_ws
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+mkdir src
+
+cd src
+
+- 克隆库
+
+git clone http://public-gitlab.cloudglab.cn/gzy/move.git
+
+git checkout ros2
+
+cd lite3_ros2
+
+git submodule update --init --recursive
+
+- 下载rosdep
+
+cd ~/ros2_ws/
+
+rosdep install --from-paths src --ignore-src -r -y
+
+- 编译
+
+cd ~/ros2_ws/
+
+colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-install
+
+- 更改ip
+打开RosToQnx.cpp、ros2qnx.cpp（其实这个ros2qnx.cpp文件应该不会执行，但是保险起见），把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
+
+每次更改代码记得再编译一次， colcon build 相当于ros1的catkin_make
 
 ## 作者及致谢
 Show your appreciation to those who have contributed to the project.
