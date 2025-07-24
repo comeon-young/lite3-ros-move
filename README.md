@@ -35,16 +35,21 @@ shh连接可以登录机器狗主机，在机器狗上进行必要的操作，�
 
 ## 3.配置ros1运动控制程序（ubuntu20.04）      使用ros2请直接看第5部分
 **（1）. 创建工作空间**
+
 mkdir -p ~/message_transformer_ws/src
+
 cd ~/message_transformer_ws/src
 
 **（2）初始化工作空间**
+
 catkin_init_workspace
 
 **（3）克隆代码库**
+
 git clone https://public-gitlab.cloudglab.cn/gzy/move.git
 
 **（4）编译工作空间**
+
 cd ~/message_transformer_ws
 
 catkin_make   #每次更改代码记得再编译一次，相当于ros2的colcon build
@@ -61,12 +66,15 @@ catkin_make   #每次更改代码记得再编译一次，相当于ros2的colcon 
 查看网络配置文件，把ip改成自己开发主机的，使用虚拟机的注意把网络设置为桥接模式，nat模式虚拟机获得的IP是假的
 
  cd ~/jy_exe/conf
+
  vim network.toml
 
 重启运动程序。其他人的控制中断或一些意外原因会致使jy_exe不工作，通常重启下就好了，但切记先让狗处于趴下状态，否则狗将重重摔在地上
 
  cd ~/jy_exe
+
  sudo ./stop.sh
+ 
  sudo ./restart.sh
 
 **（2）启动通信节点**
