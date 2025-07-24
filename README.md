@@ -159,6 +159,8 @@ rostopic echo /cmd_vel        打印/cmd_vel话题收到的信息
 
 sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，确认狗收到UDP指令（这条在ysc上运行）
 
+![演示](img/2.png)
+
 ## 5.配置ros2运动控制程序（Ubuntu22.04）
 
 - 创建工作空间
@@ -223,8 +225,14 @@ colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-insta
 source ~/ros2_ws/install/setup.bash
 
 ros2 launch lite3_description visualize.launch.py    
- #这个launch将启动桥接和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
+ #这个launch将启动桥接（通信）和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
 如果通信异常，可视化的模型将缺少狗腿。解决方式是检查网络和重启运动程序
+
+也可以只启动桥接节点：
+
+source ~/ros2_ws/install/setup.bash
+
+ros2 launch lite3_description bridge.launch.py
 
 ## 项目状态
 完
