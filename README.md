@@ -203,7 +203,7 @@ colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-insta
 每次更改代码记得再编译一次， colcon build 相当于ros1的catkin_make
 
 ## 6.使用ros2控制机器狗
-（1）ssh连接机器狗
+**（1）ssh连接机器狗**
 连上后
 
 查看网络配置文件，把ip改成自己开发主机的，使用虚拟机的注意把网络设置为桥接模式，nat模式虚拟机获得的IP是假的
@@ -220,7 +220,7 @@ colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-insta
 
  sudo ./restart.sh
 
-（2）启动桥接和可视化节点
+**（2）启动桥接和可视化节点**
 
 source ~/ros2_ws/install/setup.bash
 
@@ -234,7 +234,7 @@ source ~/ros2_ws/install/setup.bash
 
 ros2 launch lite3_description bridge.launch.py
 
-3）发布运动指令    第3到第5步不分前后顺序，可按需调整
+**（3）发布运动指令    第3到第5步不分前后顺序，可按需调整**
  使用/cmd_vel话题向运动主机下发速度指令，话题消息类型geometry_msgs/Twist定义如下：
 
 geometry_msgs/Vector3 linear                # 线速度(m/s)
@@ -264,10 +264,18 @@ ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist "{linear:{x: 0.2, y: 0.1, 
 sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1
 
 
-（4）机器狗需要在起立状态下被控制
+**（4）机器狗需要在起立状态下被控制**
 使用云深处app使狗起立
 
+**（5）进入自主模式**
+控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指
+令，手动模式下机器人响应由手柄下发的速度指令。
+为了使用ros控制机器狗，我们需要让狗进入自主模式。但我们体验版的狗是不能像官方文档里一样从app切换为自主模式的，所以我使用python脚本持续发送指令码确保狗处于自主模式。
+python脚本和指令码文档可以在子目录找到
+总之，要做的事是：运行test.py
 
+也可以使用自己的方式发送UDP指令码
+一切顺利的话，机器狗将开始按速度指令运动
 
 ## 项目状态
 完
