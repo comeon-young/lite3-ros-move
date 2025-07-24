@@ -222,7 +222,8 @@ colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-insta
 
 source ~/ros2_ws/install/setup.bash
 
-ros2 launch lite3_description visualize.launch.py     #这个launch将启动桥接和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
+ros2 launch lite3_description visualize.launch.py    
+ #这个launch将启动桥接和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
 如果通信异常，可视化的模型将缺少狗腿。解决方式是检查网络和重启运动程序
 
 ## 项目状态
