@@ -7,6 +7,10 @@
 
 legubiao的可视化库：[GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3](https://github.com/legubiao/lite3_ros2) （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2，官方库的ros2也是可用的）
 
+## 注意
+该文档参照我cf上的运动控制教程搬运并修改，未经过检验，恕难保证代码搬运和说明修改完全没有错误。如若出现可能的错误，请以本人cf页面为准。
+
+见cf： ys-实习生 主页 /0、团队管理 /3、个人事项记录 /甘正扬 /配置ros控制方式的详细步骤
 
 ## 1.配置Ubuntu环境 下载ros
 我的ros1和ros2分别安装在不同的虚拟机里Ubuntu20.04和Ubuntu22.04，下载ros和运动程序时请注意虚拟机差异
@@ -138,8 +142,7 @@ z: 0.3
 
 **（5）进入自主模式**
 
-控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指
-令，手动模式下机器人响应由手柄下发的速度指令。
+控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指令，手动模式下机器人响应由手柄下发的速度指令。
 
 为了使用ros控制机器狗，我们需要让狗进入自主模式。但我们体验版的狗是不能像官方文档里一样从app切换为自主模式的，所以我使用python脚本持续发送指令码确保狗处于自主模式。
 
@@ -151,6 +154,10 @@ z: 0.3
 
 一切顺利的话，机器狗将开始按速度指令运动
 
+推荐的角速度  angular:{x: 0.0, y: 0.0, z: 1.0}
+
+当z为2.0时，机器狗转向幅度已经过大，1.0已十分合适。
+
 **（6）查看通信状态的一些方式**
 
 rostopic info /cmd_vel         查看/cmd_vel话题的发布者订阅者数量
@@ -158,6 +165,8 @@ rostopic info /cmd_vel         查看/cmd_vel话题的发布者订阅者数量
 rostopic echo /cmd_vel        打印/cmd_vel话题收到的信息
 
 sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，确认狗收到UDP指令（这条在ysc上运行）
+
+![演示](img/2.png)
 
 ## 5.配置ros2运动控制程序（Ubuntu22.04）
 
@@ -195,13 +204,105 @@ cd ~/ros2_ws/
 
 colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-install
 
-- 更改ip
+- 更改ip(我应该改好了)
 打开RosToQnx.cpp、ros2qnx.cpp（其实这个ros2qnx.cpp文件应该不会执行，但是保险起见），把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
 
 每次更改代码记得再编译一次， colcon build 相当于ros1的catkin_make
 
-## 作者及致谢
-Show your appreciation to those who have contributed to the project.
+## 6.使用ros2控制机器狗
+**（1）ssh连接机器狗**
+连上后
+
+查看网络配置文件，把ip改成自己开发主机的，使用虚拟机的注意把网络设置为桥接模式，nat模式虚拟机获得的IP是假的
+
+ cd ~/jy_exe/conf
+
+ vim network.toml
+
+重启运动程序。其他人的控制中断或一些意外原因会致使jy_exe不工作，通常重启下就好了，但切记先让狗处于趴下状态，否则狗将重重摔在地上
+
+ cd ~/jy_exe
+
+ sudo ./stop.sh
+
+ sudo ./restart.sh
+
+**（2）启动桥接和可视化节点**
+
+source ~/ros2_ws/install/setup.bash
+
+ros2 launch lite3_description visualize.launch.py    
+ #这个launch将启动桥接（通信）和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
+如果通信异常，可视化的模型将缺少狗腿。解决方式是检查网络和重启运动程序
+
+也可以只启动桥接节点：
+
+source ~/ros2_ws/install/setup.bash
+
+ros2 launch lite3_description bridge.launch.py
+
+**（3）发布运动指令    第3到第5步不分前后顺序，可按需调整**
+ 使用/cmd_vel话题向运动主机下发速度指令，话题消息类型geometry_msgs/Twist定义如下：
+
+geometry_msgs/Vector3 linear                # 线速度(m/s)
+
+    float64 x                    # 前向速度，向前为正
+
+    float64 y                    # 侧向速度，向左为正
+
+    float64 z                    # 无效参数
+
+geometry_msgs/Vector3 angular                # 角速度(rad/s)
+
+    float64 x                    # 无效参数
+
+    float64 y                    # 无效参数
+
+    float64 z                    # 转向角速度，左转为正
+
+
+在工作空间开启新终端，发布运动指令
+
+ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist "{linear:{x: 0.2, y: 0.1, z: 0.0}, angular:{x: 0.0, y: 0.0, z: 0.3}}"
+
+
+推荐抓包狗接口，确认狗收到UDP指令(没有直接作用，就是确认一下)     --在ysc上
+
+sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1
+
+
+**（4）机器狗需要在起立状态下被控制**
+使用云深处app使狗起立
+
+**（5）进入自主模式**
+
+控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指令，手动模式下机器人响应由手柄下发的速度指令。
+
+为了使用ros控制机器狗，我们需要让狗进入自主模式。但我们体验版的狗是不能像官方文档里一样从app切换为自主模式的，所以我使用python脚本持续发送指令码确保狗处于自主模式。
+
+**总之，要做的事是：运行test.py**
+
+也可以使用自己的方式发送UDP指令码
+
+一切顺利的话，机器狗将开始按速度指令运动
+
+**（6）查看通信状态的一些方式**
+
+ros2 topic list                        #列出所有节点
+
+ros2 topic info /cmd_vel        #查看/cmd_vel话题的信息
+
+ros2 topic echo /cmd_vel      #打印/cmd_vel话题收到的信息
+
+
+
+注意：ros2方式输入运动速度时，直接在终端上删改经常莫名多删导致报错，建议在别处改好粘贴到终端上
+
+
+
+推荐的角速度  angular:{x: 0.0, y: 0.0, z: 1.0}
+
+当z为2.0时，机器狗转向幅度已经过大，1.0已十分合适。
 
 ## 项目状态
 完
