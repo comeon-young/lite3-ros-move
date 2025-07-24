@@ -3,7 +3,7 @@
 ## 介绍
 目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
 
-云深处官方github：   [GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)                     （提供ros1和ros2代码，使用了ros1）
+云深处官方github：   [GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)                     （提供ros1和ros2代码，使用了ros1，想用它的ros2代码当然也是可行的，此处以ros1为例）
 
 legubiao的可视化库：[GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3](https://github.com/legubiao/lite3_ros2) （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2）
 
@@ -163,7 +163,7 @@ sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，
 
 - 创建工作空间
 
-`cd ~
+cd ~
 
 mkdir ros2_ws
 
@@ -171,7 +171,10 @@ cd ros2_ws
 
 mkdir src
 
-cd src`
+cd src
+
+- 克隆库
+- 下载rosdep
 
 ## 作者及致谢
 Show your appreciation to those who have contributed to the project.
