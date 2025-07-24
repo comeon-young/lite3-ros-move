@@ -89,14 +89,15 @@ roslaunch message_transformer message_transformer.launch      #启动通信功�
 
 
  使用/cmd_vel话题向运动主机下发速度指令，话题消息类型geometry_msgs/Twist定义如下：
-geometry_msgs/Vector3 linear                # 线速度(m/s)
+`geometry_msgs/Vector3 linear                # 线速度(m/s)
     float64 x                    # 前向速度，向前为正
     float64 y                    # 侧向速度，向左为正
     float64 z                    # 无效参数
 geometry_msgs/Vector3 angular                # 角速度(rad/s)
     float64 x                    # 无效参数
     float64 y                    # 无效参数
-    float64 z                    # 转向角速度，左转为正
+    float64 z                    # 转向角速度，左转为正`
+
 
 
 在新终端输入
