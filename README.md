@@ -115,12 +115,19 @@ geometry_msgs/Vector3 angular                # 角速度(rad/s)
 按空格+tab，自动补全消息格式，再在速度值前加上 -r 10 使其一秒发十次，如下：
 
 rostopic pub /cmd_vel geometry_msgs/Twist -r 10 "linear: 
+
 x: 0.2 
+
 y: 0.1 
+
 z: 0.0 
+
 angular: 
+
 x: 0.0 
+
 y: 0.0 
+
 z: 0.3 
 
 **（4）机器狗需要在起立状态下被控制**
