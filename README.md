@@ -287,6 +287,7 @@ sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1
 一切顺利的话，机器狗将开始按速度指令运动
 
 **（6）查看通信状态的一些方式**
+
 ros2 topic list                        #列出所有节点
 
 ros2 topic info /cmd_vel        #查看/cmd_vel话题的信息
