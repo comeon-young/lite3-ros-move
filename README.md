@@ -17,6 +17,7 @@ ros2下载参考   [ROS2安装方法 - 图书资源](https://book.guyuehome.com/
 
 ros1参考  [【ROS】在 Ubuntu 20.04 安装 ROS 的详细教程_ubuntu20.04安装ros-CSDN博客](https://blog.csdn.net/PlutooRx/article/details/127558240)
 
+
 ## 2.ssh连接机器狗方式
 shh连接可以登录机器狗主机，在机器狗上进行必要的操作，如：更改网络配置文件（感知主机的地址，狗向这个ip发送自身信息）、重启运动程序等。
 
@@ -30,8 +31,10 @@ shh连接可以登录机器狗主机，在机器狗上进行必要的操作，�
 
 重启运动程序方式见[GitHub - DeepRoboticsLab/Lite3_MotionSDK](https://github.com/DeepRoboticsLab/Lite3_MotionSDK)   7.2 通讯问题排查
 
+
 ## 使用方法
 [GitHub - DeepRoboticsLab/Lite3_ROS](https://github.com/DeepRoboticsLab/Lite3_ROS)官方的这个运动通信库是为高级版的狗准备的，那些狗主机内自带ros程序，但是我们开发的体验版是没有的，所以代码需要下载到开发主机上
+
 
 ## 3.配置ros1运动控制程序（ubuntu20.04）      使用ros2请直接看第5部分
 **（1）. 创建工作空间**
@@ -134,6 +137,7 @@ z: 0.3
 使用云深处app使狗起立
 
 **（5）进入自主模式**
+
 控制模式决定机器人响应的速度指令来源，自主模式下机器人响应由感知主机下发的速度指
 令，手动模式下机器人响应由手柄下发的速度指令。
 
@@ -146,6 +150,14 @@ z: 0.3
 也可以使用自己的方式发送UDP指令码
 
 一切顺利的话，机器狗将开始按速度指令运动
+
+**（6）查看通信状态的一些方式**
+
+rostopic info /cmd_vel         查看/cmd_vel话题的发布者订阅者数量
+
+rostopic echo /cmd_vel        打印/cmd_vel话题收到的信息
+
+sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，确认狗收到UDP指令（这条在ysc上运行）
 
 ## Contributing
 State if you are open to contributions and what your requirements are for accepting them.
