@@ -80,7 +80,9 @@ catkin_make   #每次更改代码记得再编译一次，相当于ros2的colcon 
 **（2）启动通信节点**
 
 cd message_transformer_ws/                                    #进入功能包工作空间
+
 source devel/setup.bash                                       #添加工作空间环境变量
+
 roslaunch message_transformer message_transformer.launch      #启动通信功能包节点
 
 **（3）发布速度指令  第3到第5步不分前后顺序，可按需调整**
