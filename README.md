@@ -174,7 +174,31 @@ mkdir src
 cd src
 
 - 克隆库
+
+git clone http://public-gitlab.cloudglab.cn/gzy/move.git
+
+git checkout ros2
+
+cd lite3_ros2
+
+git submodule update --init --recursive
+
 - 下载rosdep
+
+cd ~/ros2_ws/
+
+rosdep install --from-paths src --ignore-src -r -y
+
+- 编译
+
+cd ~/ros2_ws/
+
+colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-install
+
+- 更改ip
+打开RosToQnx.cpp、ros2qnx.cpp（其实这个ros2qnx.cpp文件应该不会执行，但是保险起见），把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
+
+每次更改代码记得再编译一次， colcon build 相当于ros1的catkin_make
 
 ## 作者及致谢
 Show your appreciation to those who have contributed to the project.
