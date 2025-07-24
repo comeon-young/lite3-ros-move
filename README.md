@@ -195,13 +195,35 @@ cd ~/ros2_ws/
 
 colcon build --packages-up-to lite3_udp_bridge lite3_description --symlink-install
 
-- 更改ip
+- 更改ip(我应该改好了)
 打开RosToQnx.cpp、ros2qnx.cpp（其实这个ros2qnx.cpp文件应该不会执行，但是保险起见），把其中默认的机器狗IP192.168.1.120改成实际的192.168.2.1
 
 每次更改代码记得再编译一次， colcon build 相当于ros1的catkin_make
 
-## 作者及致谢
-Show your appreciation to those who have contributed to the project.
+## 6.使用ros2控制机器狗
+（1）ssh连接机器狗
+连上后
+
+查看网络配置文件，把ip改成自己开发主机的，使用虚拟机的注意把网络设置为桥接模式，nat模式虚拟机获得的IP是假的
+
+ cd ~/jy_exe/conf
+
+ vim network.toml
+
+重启运动程序。其他人的控制中断或一些意外原因会致使jy_exe不工作，通常重启下就好了，但切记先让狗处于趴下状态，否则狗将重重摔在地上
+
+ cd ~/jy_exe
+
+ sudo ./stop.sh
+
+ sudo ./restart.sh
+
+（2）启动桥接和可视化节点
+
+source ~/ros2_ws/install/setup.bash
+
+ros2 launch lite3_description visualize.launch.py     #这个launch将启动桥接和可视化两个节点，可视化节点可以直观看出我们的开发主机作为感知主机是否正常接收机器狗关节数据，
+如果通信异常，可视化的模型将缺少狗腿。解决方式是检查网络和重启运动程序
 
 ## 项目状态
 完
