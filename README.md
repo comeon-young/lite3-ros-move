@@ -159,12 +159,15 @@ rostopic echo /cmd_vel        打印/cmd_vel话题收到的信息
 
 sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，确认狗收到UDP指令（这条在ysc上运行）
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## 5.配置ros2运动控制程序（Ubuntu22.04）
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- 创建工作空间
+`cd ~
+mkdir ros2_ws
+cd ros2_ws
+mkdir src
+cd src`
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
 ## 作者及致谢
 Show your appreciation to those who have contributed to the project.
