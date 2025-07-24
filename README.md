@@ -2,7 +2,8 @@
 
 ## Description
 目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
-云深处官方github：  GitHub - DeepRoboticsLab/Lite3_ROS                                 （提供ros1和ros2代码，使用了ros1）
+云深处官方github：  GitHub - DeepRoboticsLab/Lite3_ROS   [](https://github.com/DeepRoboticsLab/Lite3_ROS)                              （提供ros1和ros2代码，使用了ros1）
+
 legubiao的可视化库：GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3 （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2）
 
 ## Badges
