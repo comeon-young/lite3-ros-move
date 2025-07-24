@@ -162,10 +162,15 @@ sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1      抓包狗接口，
 ## 5.配置ros2运动控制程序（Ubuntu22.04）
 
 - 创建工作空间
+
 `cd ~
+
 mkdir ros2_ws
+
 cd ros2_ws
+
 mkdir src
+
 cd src`
 
 
