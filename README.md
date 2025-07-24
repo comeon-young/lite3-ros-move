@@ -1,12 +1,9 @@
-# 机器狗运动控制
-
-***
-
-## Name
-Choose a self-explaining name for your project.
+# 机器狗ros运动控制
 
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+目前使用的运动控制代码来自云深处官方github（ros）和第三方可视化库（ros2）
+云深处官方github：  GitHub - DeepRoboticsLab/Lite3_ROS                                 （提供ros1和ros2代码，使用了ros1）
+legubiao的可视化库：GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3 （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2）
 
 ## Badges
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
