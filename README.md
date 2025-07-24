@@ -8,9 +8,8 @@
 legubiao的可视化库：[GitHub - legubiao/lite3_ros2: ROS2 UDP bridge for Deep Robotics Lite3](https://github.com/legubiao/lite3_ros2) （该库主要功能是动态模型和雷达可视化，但由于使用较便利，故使用了它的ros2，官方库的ros2也是可用的）
 
 ## 注意
-该文档参照我cf上的运动控制教程搬运并修改，未经过检验，恕难保证代码搬运和说明修改完全没有错误。如若出现可能的错误，请以本人cf页面为准。
+该文档参照本人的运动控制笔记搬运并修改，未经过再次检验，恕难保证代码搬运和说明修改完全没有错误。如若出现可能的错误，请告诉我。
 
-见cf： ys-实习生 主页 /0、团队管理 /3、个人事项记录 /甘正扬 /配置ros控制方式的详细步骤
 
 ## 1.配置Ubuntu环境 下载ros
 我的ros1和ros2分别安装在不同的虚拟机里Ubuntu20.04和Ubuntu22.04，下载ros和运动程序时请注意虚拟机差异
