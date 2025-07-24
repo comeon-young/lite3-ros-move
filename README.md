@@ -234,5 +234,40 @@ source ~/ros2_ws/install/setup.bash
 
 ros2 launch lite3_description bridge.launch.py
 
+3）发布运动指令    第3到第5步不分前后顺序，可按需调整
+ 使用/cmd_vel话题向运动主机下发速度指令，话题消息类型geometry_msgs/Twist定义如下：
+
+geometry_msgs/Vector3 linear                # 线速度(m/s)
+
+    float64 x                    # 前向速度，向前为正
+
+    float64 y                    # 侧向速度，向左为正
+
+    float64 z                    # 无效参数
+
+geometry_msgs/Vector3 angular                # 角速度(rad/s)
+
+    float64 x                    # 无效参数
+
+    float64 y                    # 无效参数
+
+    float64 z                    # 转向角速度，左转为正
+
+
+在工作空间开启新终端，发布运动指令
+
+ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist "{linear:{x: 0.2, y: 0.1, z: 0.0}, angular:{x: 0.0, y: 0.0, z: 0.3}}"
+
+
+推荐抓包狗接口，确认狗收到UDP指令(没有直接作用，就是确认一下)     --在ysc上
+
+sudo tcpdump -i p2p0 udp port 43893 and host 192.168.2.1
+
+
+（4）机器狗需要在起立状态下被控制
+使用云深处app使狗起立
+
+
+
 ## 项目状态
 完
